@@ -1,0 +1,5 @@
+__pycache__/
+Custom MNIST Samples/
+*.keras
+*.log
+log/
