@@ -15,7 +15,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
     
     # file path of our model
-    model_path_name = 'C:\\MS-AI\\parternRecogNN\\ece5831-2024-assignments\\08\\velivela_cnn_model.keras'
+    model_path_name = 'lenet_model.keras'
     # to test our model
     (_, _), (x_test, y_test) = mnist.load_data()
     

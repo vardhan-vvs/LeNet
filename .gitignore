@@ -3,3 +3,6 @@ Custom MNIST Samples/
 *.keras
 *.log
 log/
+.vscode/
+leNet_env/
+*.png
