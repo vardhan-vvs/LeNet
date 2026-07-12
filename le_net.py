@@ -5,6 +5,13 @@ from tensorflow.keras.layers import Input, Conv2D, AveragePooling2D, Flatten, De
 from tensorflow.keras.datasets import mnist
 from tensorflow.keras.utils import to_categorical
 import numpy as np
+from sklearn.metrics import (accuracy_score,
+                             confusion_matrix,
+                             classification_report,
+                             precision_score,
+                             recall_score,
+                             f1_score,
+                             roc_auc_score)
 
 class LeNet:
     def __init__(self, batch_size=32, epochs=20):
@@ -122,3 +129,35 @@ class LeNet:
         # predictions = np.argmax(self.loaded_model.predict(images), axis=1)
         predictions = self.loaded_model.predict(images)
         return predictions
+    
+    def evaluate(self, x_test, y_test):
+        '''
+        This function will compute metrics []
+        It will take two parameters, test images and their labels
+        It will return a dictionary of metrics
+        '''
+        y_pred = self.loaded_model.predict(x_test)
+        y_pred_labels = np.argmax(y_pred, axis=1)
+        
+        accuracy = accuracy_score(y_test, y_pred_labels)
+        cm = confusion_matrix(y_test, y_pred_labels)
+        classReport = classification_report(y_test, y_pred_labels)
+        precision = precision_score(y_test, y_pred_labels, average='macro')
+        recall = recall_score(y_test, y_pred_labels, average='macro')
+        f1 = f1_score(y_test, y_pred_labels, average='macro')
+        
+        y_test_onehot = to_categorical(y_test, 10)
+        auc = roc_auc_score(y_test_onehot, y_pred, multi_class='ovr', average='macro')
+        
+        metrics = {
+            'accuracy': accuracy,
+            'precision': precision,
+            'recall': recall,
+            'f1 score':f1,
+            'roc and auc': auc
+        }
+        
+        print("Confusion matrix:\n", cm)
+        print("Classification Report:\n", classReport)
+        
+        return metrics
