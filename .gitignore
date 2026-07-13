@@ -6,3 +6,6 @@ log/
 .vscode/
 leNet_env/
 *.png
+mlruns/
+mlartifacts/
+*.db

@@ -6,6 +6,10 @@ from PIL import Image
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 from tensorflow.keras.datasets import mnist
+import mlflow
+
+mlflow.set_tracking_uri("http://localhost:5000")
+mlflow.set_experiment("leNet")
 
 if __name__ == "__main__":
     # Parse command-line arguments
@@ -24,6 +28,7 @@ if __name__ == "__main__":
     
     # Initialize and load model
     network = LeNet(batch_size=64, epochs=20)
+    mlflow.tensorflow.autolog()
     if os.path.exists(f'{model_path_name}'):
         pass
     else:
@@ -38,15 +43,21 @@ if __name__ == "__main__":
     # image_data = np.array(resized_image).astype(np.float32)
     # image_data = image_data.flatten() / 255.0  # Normalize
     
-    y_hat = network.predict(x_test_prep)
-    y_hat_labels = np.argmax(y_hat, axis = 1)
+    # y_hat = network.predict(x_test_prep)
+    # y_hat_labels = np.argmax(y_hat, axis = 1)
     # image_data = image_data.reshape(1, 28,28)
     # y_hat = network.predict(image_data)
     
     # y_hat = np.argmax(y_hat)
     metrics = network.evaluate(x_test_prep, y_test)
-    print(metrics)
     
+    mlflow.log_metrics({
+        'accuracy': metrics['accuracy'],
+        'precision': metrics['precision'],
+        'recall': metrics['recall'],
+        'f1 score':metrics['f1 score'],
+        'roc and auc': metrics['roc and auc']
+    })
     # image = plt.imread(args.image_filename)
     # plt.imshow(image, cmap="gray")
     # plt.show()
