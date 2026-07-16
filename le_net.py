@@ -117,7 +117,7 @@ class LeNet:
         It returns nothing.
         '''
         if os.path.exists(f'{model_path_name}'):
-            self.loaded_model = load_model(model_path_name)
+            self.model = load_model(model_path_name)
         
     def predict(self,images):
         '''
@@ -127,7 +127,7 @@ class LeNet:
         It returns the predicted values to parent or calling function.
         '''
         # predictions = np.argmax(self.loaded_model.predict(images), axis=1)
-        predictions = self.loaded_model.predict(images)
+        predictions = self.model.predict(images)
         return predictions
     
     def evaluate(self, x_test, y_test):
@@ -136,7 +136,7 @@ class LeNet:
         It will take two parameters, test images and their labels
         It will return a dictionary of metrics
         '''
-        y_pred = self.loaded_model.predict(x_test)
+        y_pred = self.model.predict(x_test)
         y_pred_labels = np.argmax(y_pred, axis=1)
         
         accuracy = accuracy_score(y_test, y_pred_labels)
