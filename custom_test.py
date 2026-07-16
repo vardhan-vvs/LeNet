@@ -1,0 +1,1 @@
+# this file is used to test leNet with custom images, model is loaded from local machine

@@ -1,4 +1,3 @@
-import argparse
 import matplotlib.pyplot as plt
 from le_net import LeNet
 import numpy as np
@@ -22,7 +21,7 @@ if __name__ == "__main__":
     
     mlflow.tensorflow.autolog()
     
-    with mlflow.start_run(run_name='testing') as run:
+    with mlflow.start_run(run_name='LeNet_') as run:
         # Initialize and load model
         network = LeNet(batch_size=64, epochs=20)
         if os.path.exists(f'{model_path_name}'):
@@ -30,13 +29,7 @@ if __name__ == "__main__":
         else:
             network.train()
     
-        metrics = network.evaluate(x_test_prep, y_test)
-        
-        mlflow.log_metrics({
-            # 'accuracy': metrics['accuracy'],
-            'precision': metrics['precision'],
-            'recall': metrics['recall'],
-            'f1 score':metrics['f1 score'],
-            'roc and auc': metrics['roc and auc']
-        })
+        # metrics = network.evaluate(x_test_prep, y_test)
+        # predictions = network.predict()
+
         
